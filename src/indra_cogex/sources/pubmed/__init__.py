@@ -355,7 +355,7 @@ def extract_info_from_medline_xml(
             medline_citation, get_issns_from_nlm="missing"
         )
 
-        pub_tags = meta_data["publication_types"]
+        pub_tags = {tag["type"] for tag in meta_data["publication_types"]}
         yield (
             pmid,
             year,
@@ -462,8 +462,8 @@ def process_mesh_xml_to_csv(
         yielded_pmid_nlm_links = set()
         yielded_issn_nlm_links = set()
         for xml_path in tqdm(
-            list(raw_xml.glob("*.xml.gz")),
-            description="Processing XML",
+            list(raw_xml.base.glob("*.xml.gz")),
+            desc="Processing XML",
             unit="file",
         ):
             for (
